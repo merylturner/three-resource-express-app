@@ -91,4 +91,24 @@ describe('tacos REST api', () => {
                 assert.deepEqual(message, {removed: true});
             });
     });
+
+    it('returns 404 when deleting a taco that does not exist', () => {
+        return request.delete('/tacos/893784759823450987612345')
+            .then(res => {
+                const message = JSON.parse(res.text);
+                assert.deepEqual(message, {removed: false});
+            });
+    });
+        
+    it('updates an existing taco', () => {
+        return request.put(`/tacos/${babyTaco._id}`)
+            .send({toppings: 'onion'})
+            .then( () => {
+                return request.get(`/tacos/${babyTaco._id}`);
+            })
+            .then(res => {
+                const updatedTaco = res.body;
+                assert.equal(updatedTaco.toppings, 'onion');
+            });
+    });
 });
