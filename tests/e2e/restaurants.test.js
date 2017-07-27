@@ -72,4 +72,12 @@ describe('restaurant REST api', () => {
                 assert.deepEqual(restaurants, [judas.name, tacoBell.name]);
             });
     });
+
+    it('deletes a restaurant by id', () => {
+        return request.delete(`/restaurants/${tacoBell._id}`)
+            .then(res => {
+                const message = JSON.parse(res.text);
+                assert.deepEqual(message, { removed: true});
+            });
+    });  
 });
