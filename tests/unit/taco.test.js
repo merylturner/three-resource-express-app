@@ -1,5 +1,5 @@
 const Taco = require('../../lib/models/taco');
-// const { assert } = require('chai');
+const { assert } = require('chai');
 
 describe('Taco model', () => {
     
@@ -13,4 +13,16 @@ describe('Taco model', () => {
         return taco.validate();
     });
 
+    it('fails validation if required fields missing', () => {
+        const taco = new Taco();
+
+        return taco.validate()
+            .then(
+                () => { throw new Error('expected validation error');},
+                ({ errors }) => {
+                    assert.ok(errors.name);
+                    assert.ok(errors.type);
+                }
+            );
+    });
 });
