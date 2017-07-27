@@ -39,7 +39,7 @@ describe('tacos REST api', () => {
     function saveTaco(taco) {
         return request.post('/tacos')
             .send(taco)
-            .then(({body}) => {
+            .then(({ body }) => {
                 taco._id = body._id;
                 taco.__v = body.__v;
                 return body;
@@ -60,6 +60,27 @@ describe('tacos REST api', () => {
             .then(res => res.body)
             .then(taco => {
                 assert.deepEqual(taco, angryTaco);
+            });
+    });
+
+    it('returns 404 if taco does not exist', () => {
+        return request.get('/tacos/893784759823450987612345')
+            .then(() => {
+                throw new Error('successful status code note expected');
+            }, ({ response }) => {
+                assert.ok(response.notFound);
+            });
+    });
+
+    it('GET all tacos', () => {
+        return Promise.all([
+            saveTaco(nomNom),
+            saveTaco(babyTaco)
+        ])
+            .then(() => request.get('/tacos'))
+            .then(res => {
+                const tacos = [res.body[0].name, res.body[1].name, res.body[2].name];
+                assert.deepEqual(tacos, [angryTaco.name, nomNom.name, babyTaco.name]);
             });
     });
 });
