@@ -81,4 +81,12 @@ describe('drinks REST api', () => {
                 assert.deepEqual(drinks, [basic.name, beer.name, margarita.name]);
             });
     });
+
+    it('deletes a drink by id', () => {
+        return request.delete(`/drinks/${beer._id}`)
+            .then(res => {
+                const message = JSON.parse(res.text);
+                assert.deepEqual(message, {removed: true});
+            });
+    });
 });
