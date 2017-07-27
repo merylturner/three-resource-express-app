@@ -79,5 +79,17 @@ describe('restaurant REST api', () => {
                 const message = JSON.parse(res.text);
                 assert.deepEqual(message, { removed: true});
             });
-    });  
+    }); 
+        
+    it('updates an existing restaurant', () => {
+        return request.put(`/restaurants/${judas._id}`)
+            .send({ name: 'baby judas'})
+            .then(() => {
+                return request.get(`/restaurants/${judas._id}`);                
+            })
+            .then(res => {
+                const updatedRestaurant = res.body;
+                assert.equal(updatedRestaurant.name, 'baby judas');
+            });
+    });
 });
