@@ -83,4 +83,12 @@ describe('tacos REST api', () => {
                 assert.deepEqual(tacos, [angryTaco.name, nomNom.name, babyTaco.name]);
             });
     });
+
+    it('DELETEs a taco by id', () => {
+        return request.delete(`/tacos/${angryTaco._id}`)
+            .then(res => {
+                const message = JSON.parse(res.text);
+                assert.deepEqual(message, {removed: true});
+            });
+    });
 });
