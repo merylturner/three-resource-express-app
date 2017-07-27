@@ -24,7 +24,7 @@ describe('restaurant model', () => {
                 ({ errors }) => {
                     assert.ok(errors.name);
                 }
-            )
+            );
     });
     
 });
