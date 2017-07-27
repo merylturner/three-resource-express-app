@@ -62,4 +62,14 @@ describe('restaurant REST api', () => {
             });
     });
 
+    it('gets all restaurants', () => {
+        return Promise.all([
+            saveRestaurant(tacoBell)
+        ])
+            .then(() => request.get('/restaurants'))
+            .then(res => {
+                const restaurants = [res.body[0].name, res.body[1].name];
+                assert.deepEqual(restaurants, [judas.name, tacoBell.name]);
+            });
+    });
 });
