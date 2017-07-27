@@ -52,4 +52,14 @@ describe('restaurant REST api', () => {
                 assert.deepEqual(savedRestaurant, judas);
             });
     });
+
+    it('gets restaurant if it exists', () => {
+        return request 
+            .get(`/restaurants/${judas._id}`)
+            .then(res => res.body)
+            .then(restaurant => {
+                assert.deepEqual(restaurant, judas);
+            });
+    });
+
 });
