@@ -53,4 +53,13 @@ describe('tacos REST api', () => {
             });
 
     });
+
+    it('GETs a taco if it exists', () => {
+        return request
+            .get(`/tacos/${angryTaco._id}`)
+            .then(res => res.body)
+            .then(taco => {
+                assert.deepEqual(taco, angryTaco);
+            });
+    });
 });
