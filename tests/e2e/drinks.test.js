@@ -33,10 +33,10 @@ describe('drinks REST api', () => {
         size: 12
     };
 
-    function saveDrink(drink){
+    function saveDrink(drink) {
         return request.post('/drinks')
             .send(drink)
-            .then(({body}) => {
+            .then(({ body }) => {
                 drink._id = body._id;
                 drink.__v = body.__v;
                 return body;
@@ -57,6 +57,28 @@ describe('drinks REST api', () => {
             .then(res => res.body)
             .then(drink => {
                 assert.deepEqual(drink, basic);
+            });
+    });
+
+    it('returns 404 if drink does not exist', () => {
+        return request.get('/drinks/897638473647898765432345')
+            .then(() => {
+                throw new Error('successful status code not expected');
+            },
+            ({ response }) => {
+                assert.ok(response.notFound);
+            });
+    });
+
+    it('gets all the drinks', () => {
+        return Promise.all([
+            saveDrink(beer),
+            saveDrink(margarita)
+        ])
+            .then(() => request.get('/drinks'))
+            .then(res => {
+                const drinks = [res.body[0].name, res.body[1].name, res.body[2].name];
+                assert.deepEqual(drinks, [basic.name, beer.name, margarita.name]);
             });
     });
 });

@@ -16,7 +16,7 @@ describe('Drink model', () => {
         const drink = new Drink();
         return drink.validate()
             .then(
-                () => {throw new Error('expected validation error');},
+                () => { throw new Error('expected validation error'); },
                 ({ errors }) => {
                     assert.ok(errors.name);
                 }
@@ -32,7 +32,7 @@ describe('Drink model', () => {
 
         return drink.validate()
             .then(
-                () => { throw new Error('expected validation error');},
+                () => { throw new Error('expected validation error'); },
                 ({ errors }) => {
                     assert.equal(errors.type.kind, 'enum');
                 }
