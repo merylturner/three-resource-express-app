@@ -8,10 +8,11 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha tests",
+    "test": "mocha tests --recursive",
     "test:unit": "mocha tests/unit",
     "test:e2e": "mocha tests/e2e",
-    "start": "npm test -- -w"
+    "dev:unit": "nodemon --exec 'npm run test:unit -- -w'",
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,8 @@
     "chai": "^4.1.0",
     "chai-http": "^3.0.0",
     "eslint": "^4.3.0",
-    "mocha": "^3.4.2"
+    "mocha": "^3.4.2",
+    "nodemon": "^1.11.0"
   },
   "dependencies": {
     "body-parser": "^1.17.2",
