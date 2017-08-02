@@ -59,4 +59,14 @@ describe('salsas REST api', () => {
                 assert.deepEqual(salsa, salsaVerde);
             });
     });
+
+    it('returns 404 if salsa does not exist', () => {
+        return request.get('/salsas/609889997766543344455432')
+            .then(() => {
+                throw new Error('successful status code not expected');
+            },
+            ({ response }) => {
+                assert.ok(response.notFound);
+            });
+    });
 });
