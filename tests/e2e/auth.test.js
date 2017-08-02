@@ -85,10 +85,27 @@ describe('auth', () => {
                 .then(() => {
                     throw new Error('successful response not expected');
                 },
-                res => {
-                    assert.equal(res.status.code, 401);
-                });
+                res => assert.equal(res.status.code, 401));
         });
 
+        it('valid token', () => {
+            request
+                .get('/auth/verify')
+                .set('Authorization', token)
+                .then(res => assert.ok(res.body));
+        });
+    });
+
+    describe.skip('unauthorized', () => {
+        it('returns 401 with no token', () => {
+            return request
+                .get('/salsas')
+                .then(() => {
+                    throw new Error('status should not be 200');
+                }, res => {
+                    assert.equal(res.status.code, 401);
+                    assert.equal(res.response.body.error, 'No Authorization Found');
+                });
+        });
     });
 });
