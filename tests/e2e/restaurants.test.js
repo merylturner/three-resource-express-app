@@ -17,7 +17,7 @@ describe('restaurant REST api', () => {
     before(() => connection.dropDatabase());
 
     let token = null;
-    before(() => db.getToken().then( t => token = t));
+    before(() => db.getToken().then(t => token = t));
 
     const tacoBell = {
         name: 'taco bell',
@@ -41,6 +41,7 @@ describe('restaurant REST api', () => {
 
     function saveRestaurant(restaurant) {
         return request.post('/restaurants')
+            .set('Authorization', token)
             .send(restaurant)
             .then(({ body }) => {
                 restaurant._id = body._id;
@@ -58,7 +59,7 @@ describe('restaurant REST api', () => {
     });
 
     it('gets restaurant if it exists', () => {
-        return request 
+        return request
             .get(`/restaurants/${judas._id}`)
             .then(res => res.body)
             .then(restaurant => {
@@ -82,16 +83,16 @@ describe('restaurant REST api', () => {
             .set('Authorization', token)
             .then(res => {
                 const message = JSON.parse(res.text);
-                assert.deepEqual(message, { removed: true});
+                assert.deepEqual(message, { removed: true });
             });
-    }); 
-        
+    });
+
     it('updates an existing restaurant', () => {
         return request.put(`/restaurants/${judas._id}`)
             .set('Authorization', token)
-            .send({ name: 'baby judas'})
+            .send({ name: 'baby judas' })
             .then(() => {
-                return request.get(`/restaurants/${judas._id}`);                
+                return request.get(`/restaurants/${judas._id}`);
             })
             .then(res => {
                 const updatedRestaurant = res.body;

@@ -26,7 +26,7 @@ describe('auth', () => {
                     }
                 );
 
-        it.only('signup requires email', () => badRequest('/auth/signup', { password: 'abc' }, 400, 'email and password must be supplied'));
+        it('signup requires email', () => badRequest('/auth/signup', { password: 'abc' }, 400, 'email and password must be supplied'));
 
         it('signup requires password', () => badRequest('/auth/signup', { email: 'abc' }, 400, 'email and password must be supplied'));
 
@@ -64,10 +64,10 @@ describe('auth', () => {
         );
     });
 
-    describe.skip('unauthorized', () => {
+    describe('unauthorized', () => {
         it('404 with no token', () => {
             return request
-                .get('/restaurants')
+                .get('/auth/verify')
                 .then(
                     () => { throw new Error('status should not be 200');},
                     res => {
@@ -80,7 +80,7 @@ describe('auth', () => {
 
     it.skip('403 with invalid token', () => {
         return request
-            .post('/restaurants')
+            .post('/auth/verify')
             .set('Authorization', 'badtoken')
             .then(
                 () => { throw new Error('status should not be 200');},
