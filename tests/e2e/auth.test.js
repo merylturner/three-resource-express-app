@@ -4,7 +4,7 @@ const { assert } = require('chai');
 
 
 describe('auth', () => {
-    
+
     before(db.drop);
 
 
@@ -20,18 +20,18 @@ describe('auth', () => {
         //         .send({ email: 'meryl@meryl.com', password: '123' })
         //         .then(res => token = res.body.token);
         // });
-        
+
         const badRequest = (url, data, code, error) => {
             request
                 .post(url)
                 .send(data)
                 .then(() => {
                     throw new Error('status should not be okay');
-                }),
-            res => {
-                assert.equal(res.status, code);
-                assert.equal(res.response.body.error, error);
-            };
+                },
+                res => {
+                    assert.equal(res.status, code);
+                    assert.equal(res.response.body.error, error);
+                });
         };
 
         it('signup requires an email', () => {
@@ -88,16 +88,16 @@ describe('auth', () => {
         });
     });
 
-    describe.skip('unauthorized', () => {
-        it('returns 401 with no token', () => {
-            return request
-                .get('/salsas')
-                .then(() => {
-                    throw new Error('status should not be 200');
-                }, res => {
-                    assert.equal(res.status.code, 401);
-                    assert.equal(res.response.body.error, 'No Authorization Found');
-                });
-        });
-    });
+    // describe.skip('unauthorized', () => {
+    //     it('returns 401 with no token', () => {
+    //         return request
+    //             .get('/salsas')
+    //             .then(() => {
+    //                 throw new Error('status should not be 200');
+    //             }, res => {
+    //                 assert.equal(res.status.code, 401);
+    //                 assert.equal(res.response.body.error, 'No Authorization Found');
+    //             });
+    //     });
+    // });
 });

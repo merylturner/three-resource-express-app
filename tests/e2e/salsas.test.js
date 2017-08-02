@@ -5,6 +5,9 @@ const { assert } = require('chai');
 describe('salsas REST api', () => {
     before(db.drop);
 
+    let token = null;
+    before(() => db.getToken().then(t => token = t));
+
     const salsaVerde = {
         name: 'salsa verde',
         type: 'green',
@@ -25,6 +28,7 @@ describe('salsas REST api', () => {
 
     function saveSalsa(salsa) {
         return request.post('/salsas')
+            .set('Authorization', token)
             .send(salsa)
             .then(({ body }) => {
                 salsa._id = body._id;
@@ -44,6 +48,7 @@ describe('salsas REST api', () => {
     it('gets a salsa if it exists', () => {
         return request
             .get(`/salsas/${salsaVerde._id}`)
+            .set('Authorization', token)
             .then(res => res.body)
             .then(salsa => {
                 assert.deepEqual(salsa, salsaVerde);
@@ -52,6 +57,7 @@ describe('salsas REST api', () => {
 
     it('returns 404 if salsa does not exist', () => {
         return request.get('/salsas/609889997766543344455432')
+            .set('Authorization', token)
             .then(() => {
                 throw new Error('successful status code not expected');
             },
@@ -65,7 +71,11 @@ describe('salsas REST api', () => {
             saveSalsa(hotAndSpicy),
             saveSalsa(mangoSalsa)
         ])
-            .then(() => request.get('/salsas'))
+            .then(() => {
+                request
+                    .get('/salsas')
+                    .set('Authorization', token);
+            })
             .then(res => {
                 const salsas = [res.body[0].name, res.body[1].name, res.body[2].name];
                 assert.deepEqual(salsas, [salsaVerde.name, hotAndSpicy.name, mangoSalsa.name]);
