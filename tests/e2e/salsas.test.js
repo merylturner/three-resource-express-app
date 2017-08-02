@@ -69,4 +69,16 @@ describe('salsas REST api', () => {
                 assert.ok(response.notFound);
             });
     });
+
+    it('gets all the salsas', () => {
+        return Promise.all([
+            saveSalsa(hotAndSpicy),
+            saveSalsa(mangoSalsa)
+        ])
+            .then(() => request.get('/salsas'))
+            .then(res => {
+                const salsas = [res.body[0].name, res.body[1].name, res.body[2].name];
+                assert.deepEqual(salsas, [salsaVerde.name, hotAndSpicy.name, mangoSalsa.name]);
+            });
+    });
 });
