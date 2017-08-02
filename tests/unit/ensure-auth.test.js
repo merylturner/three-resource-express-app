@@ -1,5 +1,5 @@
 const { assert } = require('chai');
-const ensureAuth = require('../../lib/auth/ensure-auth');
+const ensureAuth = require('../../lib/auth/ensure-auth')();
 const tokenService = require('../../lib/auth/token-service');
 
 describe('ensure authentication middleware', () => {
@@ -17,15 +17,15 @@ describe('ensure authentication middleware', () => {
         ensureAuth(req, null, next);
     });
 
-    it('routes to error handler with bad token', () => {
+    it('routes to error handler with bad token', done => {
         const req = {
             get() {
                 return 'bad token';
             }
         };
         const next = (error) => {
-            assert.deepEqual(error, { code: 401, error: 'Authorization failed'});
-            next();
+            assert.deepEqual(error, { code: 401, error: 'Authorization Failed'});
+            done();
         };
 
         ensureAuth(req, null, next);
