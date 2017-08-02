@@ -12,5 +12,7 @@ describe('user model', () => {
         user.generateHash(password);
         assert.notEqual(user.hash, password);
 
+        assert.isOk(user.comparePassword, ('123'));
+
     });
 });
