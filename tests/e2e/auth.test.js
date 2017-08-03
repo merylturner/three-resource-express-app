@@ -38,28 +38,28 @@ describe('auth', () => {
 
         let token = '';
 
-        it('user signup', () => {
+        it('user signup', () => 
             request
                 .post('/auth/signup')
                 .send(user)
-                .then(res => assert.ok(token = res.body.token));
-        });
+                .then(res => assert.ok(token = res.body.token))
+        );
 
         it('cannot use the same email', () => {
             badRequest('/auth/signup', user, 400, 'email already in use');
         });
 
         it('sign in with wrong user', () => {
-            badRequest('/auth/signup', { email: 'bad user', password: user.password }, 400, 'Invalid Login');
+            badRequest('/auth/signin', { email: 'bad user', password: user.password }, 401, 'Invalid Login');
         });
 
         it('sign in with wrong password', () => {
-            badRequest('/auth/signup', { email: user.email, password: 'bad' }, 400, 'Invalid Login');
+            badRequest('/auth/signin', { email: user.email, password: 'bad' }, 401, 'Invalid Login');
         });
 
-        it('user signup', () => {
+        it('user signin', () => {
             request
-                .post('/auth/signup')
+                .post('/auth/signin')
                 .send(user)
                 .then(res => assert.ok(res.body.token));
         });
@@ -71,14 +71,16 @@ describe('auth', () => {
                 .then(() => {
                     throw new Error('successful response not expected');
                 },
-                res => assert.equal(res.status.code, 401));
+                res => assert.equal(res.status, 401));
         });
 
         it('valid token', () => {
             request
                 .get('/auth/verify')
                 .set('Authorization', token)
-                .then(res => assert.ok(res.body));
+                .then(res => {
+                    assert.ok(res.body);
+                });
         });
     });
 
