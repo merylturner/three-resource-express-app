@@ -15,12 +15,6 @@ describe('auth', () => {
 
     describe('user management', () => {
 
-        // before(() => {
-        //     return request.post('/auth/signup')
-        //         .send({ email: 'meryl@meryl.com', password: '123' })
-        //         .then(res => token = res.body.token);
-        // });
-
         const badRequest = (url, data, code, error) => {
             request
                 .post(url)
@@ -88,7 +82,7 @@ describe('auth', () => {
         });
     });
 
-    // describe.skip('unauthorized', () => {
+    // describe('unauthorized', () => {
     //     it('returns 401 with no token', () => {
     //         return request
     //             .get('/salsas')

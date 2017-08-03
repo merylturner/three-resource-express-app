@@ -71,14 +71,11 @@ describe('salsas REST api', () => {
             saveSalsa(hotAndSpicy),
             saveSalsa(mangoSalsa)
         ])
-            .then(() => {
-                request
-                    .get('/salsas')
-                    .set('Authorization', token);
-            })
-            .then(res => {
-                const salsas = [res.body[0].name, res.body[1].name, res.body[2].name];
-                assert.deepEqual(salsas, [salsaVerde.name, hotAndSpicy.name, mangoSalsa.name]);
-            });
+            .then(() => request
+                .get('/salsas')
+                .set('Authorization', token)
+            )
+            .then(res => res.body)
+            .then(salsas => assert.deepEqual(salsas, [salsaVerde, hotAndSpicy, mangoSalsa]));
     });
 });
